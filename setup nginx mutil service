@@ -1,8 +1,15 @@
+
 - Mutil service and mutil domain on server
 
 
-- domain 1: example1.com  -> run service1  odoo15_ex1.service on port 8069
-- domain 2: example2.com  -> run service2: odoo15_ex2.service port 8079
+- domain 1: example1.com  -> run service1  odoo15_ex1.service on port 8069 with ubuntu user odoo15_ex1, user for postgresql : odoo15_ex1
+- domain 2: example2.com  -> run service2: odoo15_ex2.service port 8079 with ubuntu user odoo15_ex2, user for postgresql: odoo15_ex2
+
+
+
+----------install odoo--------
+- odoo_ex1:
+    install odoo
 
 cd /etc/nginx/conf.d
 
