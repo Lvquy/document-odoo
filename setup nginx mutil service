@@ -1,0 +1,90 @@
+- Mutil service and mutil domain on server
+
+
+- domain 1: example1.com  -> run service1  odoo15_ex1.service on port 8069
+- domain 2: example2.com  -> run service2: odoo15_ex2.service port 8079
+
+cd /etc/nginx/conf.d
+
+- create file odoo15_ex1.conf
+
+nano odoo15_ex1.conf
+- pase code below:
+  
+      upstream odoo {
+      server 127.0.0.1:8069;
+      }
+
+      server {
+      listen 80;
+      server_name example1.com;
+      root /usr/share/nginx/html;
+      index index.html index.htm;
+      access_log /var/log/nginx/odoo-example1.com-local.access.log;
+      error_log /var/log/nginx/odoo-example1.com-local.error.log;
+
+      location / {
+      proxy_pass http://odoo;
+      # force timeouts if the backend dies
+      proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+      proxy_redirect off;
+
+      # set headers
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto https;
+      }
+
+      # cache some static data in memory for 60mins
+      location ~* /web/static/ {
+      proxy_cache_valid 200 60m;
+      proxy_buffering on;
+      expires 864000;
+      proxy_pass http://odoo;
+      }
+      }
+   -------------------------
+nano odoo15_ex2.conf
+- pase code below:
+
+      upstream odoo {
+      server 127.0.0.1:8069;
+      }
+
+      server {
+      listen 80;
+      server_name example2.com;
+      root /usr/share/nginx/html;
+      index index.html index.htm;
+      access_log /var/log/nginx/odoo-example2.com-local.access.log;
+      error_log /var/log/nginx/odoo-example2.com-local.error.log;
+
+      location / {
+      proxy_pass http://odoo;
+      # force timeouts if the backend dies
+      proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+      proxy_redirect off;
+
+      # set headers
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto https;
+      }
+
+      # cache some static data in memory for 60mins
+      location ~* /web/static/ {
+      proxy_cache_valid 200 60m;
+      proxy_buffering on;
+      expires 864000;
+      proxy_pass http://odoo;
+      }
+      }
+  -------
+  - check syntax nginx
+  nginx -t
+  systemctl restart nginx
+  - create ssl for domain
+  certbot --nginx -d example1.com
+  certbot --nginx -d example2.com
