@@ -1,0 +1,69 @@
+Kiểm tra xem ufw có được bật hay không:
+
+sudo ufw status
+
+Để bật ufw dùng lệnh sau:
+
+sudo ufw enable
+
+Dùng lệnh sau để tắt:
+
+sudo ufw disable
+
+Chặn địa chỉ IP:
+sudo ufw deny from [ip muốn chặn]
+vd: sudo ufw deny from 192.168.1.1
+
+Xem ip đã được chặn chưa:
+sudo ufw status
+Chặn các mạng con:
+
+sudo ufw deny from [mạng con muốn chặn]
+vd:sudo ufw deny from 172.16.10.0/24
+
+Cho phép các IP kết nối:
+sudo ufw allow from [IP muốn cho phép]
+Xóa các quy tắc UFW:
+xem ID của rule
+sudo ufw status numbered
+ rồi nhập id vào bên dưới: ví dụ là 1
+sudo ufw delete 1
+Liệt kê các ứng dụng có sẵn:
+
+sudo ufw app list
+Cho phép SSH:
+
+sudo ufw allow OpenSSH
+sudo ufw allow 22
+
+Cho phép SSH đến từ địa chỉ hay mạng con cụ thể:
+
+Lệnh sau sẽ chỉ cho phép các kết nối SSH đến từ địa chỉ IP:172.16.1.31:
+
+sudo ufw allow from 172.16.1.31 proto tcp to any port 22
+Lệnh sai cho phép mạng con kết nối SSH:
+
+sudo ufw allow from 172.16.1.0/24 proto tcp to any port 22
+
+Cho phép Nginx HTTP/HTTPS:
+
+
+Chạy lệnh sau để xác định cấu hình nào khả dụng:
+
+sudo ufw app list | grep Nginx
+
+
+Lệnh sau để cho phép HTTP/HTTPS chạy trên cổng  80 và 443:
+
+sudo ufw allow "Nginx Full"
+
+
+Cho phép phép tất cả các kết nối HTTP đến cổng 80:
+
+sudo ufw allow http
+
+
+Cho phép phép tất cả các kết nối HTTPS đến cổng 443:
+
+sudo ufw allow https
+
