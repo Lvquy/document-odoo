@@ -1,3 +1,8 @@
+
+xem ip nào đang tấn công, trên 50 kết nối là block luôn 
+netstat -ntu|awk '{print $5}'|cut -d: -f1 -s|sort|uniq -c|sort -nk1 -r
+
+----------------- ufw -----------
 Kiểm tra xem ufw có được bật hay không:
 
 sudo ufw status
