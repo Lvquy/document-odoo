@@ -72,3 +72,10 @@ Cho phép phép tất cả các kết nối HTTPS đến cổng 443:
 
 sudo ufw allow https
 
+Chặn kết nối port 5353 từ máy chủ ra bên ngoài:
+sudo ufw deny out 5353
+
+Chặn tất cả các gói tin ra bên ngoài 
+sudo ufw default deny outgoing
+cho phep
+sudo ufw default allow outgoing
